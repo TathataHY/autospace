@@ -1,0 +1,13 @@
+{
+  "name": "autospace",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {},
+  "author": "Tathata <andre.yovera1@gmail.com>",
+  "license": "MIT",
+  "description": ""
+}
