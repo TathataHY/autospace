@@ -2,12 +2,32 @@
   "name": "autospace",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "workspaces": [
     "apps/*",
     "libs/*"
   ],
-  "scripts": {},
+  "scripts": {
+    "format": "prettier \"{apps,libs}/**/*.{ts,tsx,js,json}\" --ignore-path .gitignore",
+    "format:check": "npm run format -- --check",
+    "format:write": "npm run format -- --write",
+    "dev": "concurrently -n WEB,API -c blue,green \"npm run dev:next\" \"npm run dev:nest\"",
+    "dev:next": "npm run dev -w @autospace/web",
+    "dev:nest": "npm run start:dev -w @autospace/api",
+    "tsc": "npm run --workspaces --if-present --parallel tsc",
+    "lint": "npm run --workspaces --if-present --parallel lint",
+    "build": "npm run --workspaces --if-present --parallel build",
+    "validate": "npm run format:write && npm run tsc && npm run lint && npm run build",
+    "prepare": "husky install"
+  },
   "author": "Tathata <andre.yovera1@gmail.com>",
   "license": "MIT",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^22.8.1",
+    "concurrently": "^9.0.1",
+    "husky": "^8.0.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3"
+  }
 }

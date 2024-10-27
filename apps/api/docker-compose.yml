@@ -1,0 +1,16 @@
+services:
+  autospace:
+    image: postgres
+    container_name: autospace_postgres
+    environment:
+      POSTGRES_DB: autospace
+      POSTGRES_USER: autospace_user
+      POSTGRES_PASSWORD: autospace_password
+    ports:
+      - '5432:5432'
+    volumes:
+      - autospace_postgres_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  autospace_postgres_data:
