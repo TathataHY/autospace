@@ -39,3 +39,8 @@ coverage/
 # Archivos temporales
 *.tmp
 *.temp
+
+
+
+.nx/cache
+.nx/workspace-data
