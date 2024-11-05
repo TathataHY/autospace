@@ -1,0 +1,18 @@
+{
+  "name": "@autospace/3d",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {},
+  "author": "Tathata <andre.yovera1@gmail.com>",
+  "license": "MIT",
+  "description": "3d models for autospace",
+  "devDependencies": {
+    "@types/three": "^0.169.0"
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.115.0",
+    "@react-three/fiber": "^9.0.0-alpha.8",
+    "three": "^0.170.0"
+  }
+}
