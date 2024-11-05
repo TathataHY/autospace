@@ -1,8 +1,8 @@
-import js from '@eslint/js';
-import tseslint from '@typescript-eslint/eslint-plugin';
-import tseslintParser from '@typescript-eslint/parser';
-import prettierPlugin from 'eslint-plugin-prettier';
-import globals from 'globals';
+import js from '@eslint/js'
+import tseslint from '@typescript-eslint/eslint-plugin'
+import tseslintParser from '@typescript-eslint/parser'
+import prettierPlugin from 'eslint-plugin-prettier'
+import globals from 'globals'
 
 export default [
   js.configs.recommended,
@@ -38,4 +38,4 @@ export default [
       },
     },
   },
-];
+]

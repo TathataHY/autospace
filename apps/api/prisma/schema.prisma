@@ -16,18 +16,23 @@ datasource db {
 model User {
   uid          String        @id
   name         String?
+  image        String?
   credentials  Credentials?
   authProvider AuthProvider?
   admin        Admin?
+  manager      Manager?
+  valet        Valet?
+  customer     Customer?
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
 
 model Admin {
-  uid       String   @id
-  user      User     @relation(fields: [uid], references: [uid])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  uid           String         @id
+  user          User           @relation(fields: [uid], references: [uid])
+  verifications Verification[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
 
 model Credentials {
@@ -46,6 +51,186 @@ model AuthProvider {
 }
 
 enum AuthProviderType {
-  EMAIL
+  CREDENTIALS
   GOOGLE
+}
+
+model Customer {
+  uid         String    @id
+  user        User      @relation(fields: [uid], references: [uid])
+  displayName String?
+  bookings    Booking[]
+  reviews     Review[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Manager {
+  uid             String            @id
+  user            User              @relation(fields: [uid], references: [uid])
+  displayName     String?
+  companyId       Int?              @unique
+  company         Company?          @relation(fields: [companyId], references: [id])
+  bookingTimeline BookingTimeline[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model Valet {
+  uid               String            @id
+  user              User              @relation(fields: [uid], references: [uid])
+  displayName       String
+  image             String?
+  licenceID         String            @default("")
+  companyId         Int?
+  company           Company?          @relation(fields: [companyId], references: [id])
+  bookingTimeline   BookingTimeline[]
+  pickupAssignments ValetAssignment[] @relation("PickupValet")
+  returnAssignments ValetAssignment[] @relation("ReturnValet")
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@unique([companyId, uid])
+}
+
+model Company {
+  id          Int       @id @default(autoincrement())
+  displayName String?
+  description String?
+  garages     Garage[]
+  managers    Manager[]
+  valets      Valet[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Garage {
+  id           Int           @id @default(autoincrement())
+  displayName  String?
+  description  String?
+  images       String[]
+  companyId    Int
+  company      Company       @relation(fields: [companyId], references: [id])
+  address      Address?
+  verification Verification?
+  reviews      Review[]
+  slots        Slot[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Address {
+  id        Int      @id @default(autoincrement())
+  address   String
+  latitude  Float
+  longitude Float
+  garageId  Int      @unique
+  garage    Garage   @relation(fields: [garageId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Slot {
+  id           Int       @id @default(autoincrement())
+  displayName  String?
+  pricePerHour Float
+  length       Int?
+  width        Int?
+  height       Int?
+  type         SlotType  @default(CAR)
+  garageId     Int
+  garage       Garage    @relation(fields: [garageId], references: [id])
+  bookings     Booking[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+enum SlotType {
+  CAR
+  HEAVY
+  BIKE
+  BICYCLE
+}
+
+model Booking {
+  id              Int               @id @default(autoincrement())
+  pricePerHour    Float?
+  totalPrice      Float?
+  startTime       DateTime
+  endTime         DateTime
+  vehicleNumber   String
+  phoneNumber     String?
+  passcode        String?
+  status          BookingStatus     @default(BOOKED)
+  slotId          Int
+  slot            Slot              @relation(fields: [slotId], references: [id])
+  customerId      String
+  customer        Customer          @relation(fields: [customerId], references: [uid])
+  valetAssignment ValetAssignment?
+  bookingTimeline BookingTimeline[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@index([startTime, endTime])
+}
+
+enum BookingStatus {
+  BOOKED
+  VALET_ASSIGNED_FOR_CHECK_IN
+  VALET_PICKED_UP
+  CHECKED_IN
+  VALET_ASSIGNED_FOR_CHECK_OUT
+  CHECKED_OUT
+  VALET_RETURNED
+}
+
+model ValetAssignment {
+  bookingId     Int      @id
+  booking       Booking  @relation(fields: [bookingId], references: [id])
+  pickupLat     Float?
+  pickupLng     Float?
+  returnLat     Float?
+  returnLng     Float?
+  pickupValetId String?
+  returnValetId String?
+  pickupValet   Valet?   @relation("PickupValet", fields: [pickupValetId], references: [uid])
+  returnValet   Valet?   @relation("ReturnValet", fields: [returnValetId], references: [uid])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model BookingTimeline {
+  id        Int           @id @default(autoincrement())
+  timestamp DateTime      @default(now())
+  status    BookingStatus
+  bookingId Int
+  booking   Booking       @relation(fields: [bookingId], references: [id])
+  valetId   String?
+  valet     Valet?        @relation(fields: [valetId], references: [uid])
+  managerId String?
+  manager   Manager?      @relation(fields: [managerId], references: [uid])
+
+  @@index([bookingId])
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  rating     Int      @default(0)
+  comment    String?
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [uid])
+  garageId   Int
+  garage     Garage   @relation(fields: [garageId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Verification {
+  verified  Boolean  @default(false)
+  adminId   String
+  admin     Admin    @relation(fields: [adminId], references: [uid])
+  garageId  Int      @id
+  garage    Garage   @relation(fields: [garageId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

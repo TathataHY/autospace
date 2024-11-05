@@ -1,0 +1,100 @@
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql'
+import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
+import { checkRowLevelPermission } from 'src/common/auth/util'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { GetUserType } from 'src/common/types'
+import { Garage } from 'src/models/garages/graphql/entity/garage.entity'
+import { Manager } from 'src/models/managers/graphql/entity/manager.entity'
+import { CompaniesService } from './companies.service'
+import { CreateCompanyInput } from './dtos/create-company.input'
+import { FindManyCompanyArgs, FindUniqueCompanyArgs } from './dtos/find.args'
+import { UpdateCompanyInput } from './dtos/update-company.input'
+import { Company } from './entity/company.entity'
+
+@Resolver(() => Company)
+export class CompaniesResolver {
+  constructor(
+    private readonly companiesService: CompaniesService,
+    private readonly prisma: PrismaService,
+  ) {}
+
+  @AllowAuthenticated()
+  @Mutation(() => Company)
+  createCompany(
+    @Args('createCompanyInput') args: CreateCompanyInput,
+    @GetUser() user: GetUserType,
+  ) {
+    checkRowLevelPermission(user, args.managerId)
+    return this.companiesService.create(args)
+  }
+
+  @AllowAuthenticated()
+  @Query(() => [Company], { name: 'companies' })
+  findAll(@Args() args: FindManyCompanyArgs) {
+    return this.companiesService.findAll(args)
+  }
+
+  @Query(() => Company, { name: 'company' })
+  findOne(@Args() args: FindUniqueCompanyArgs) {
+    return this.companiesService.findOne(args)
+  }
+
+  @AllowAuthenticated()
+  @Query(() => Company)
+  myCompany(@GetUser() user: GetUserType) {
+    return this.prisma.company.findFirst({
+      where: { managers: { some: { uid: user.uid } } },
+    })
+  }
+
+  @AllowAuthenticated()
+  @Mutation(() => Company)
+  async updateCompany(
+    @Args('updateCompanyInput') args: UpdateCompanyInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const company = await this.prisma.company.findUnique({
+      where: { id: args.id },
+      include: { managers: true },
+    })
+    checkRowLevelPermission(
+      user,
+      company.managers.map((m) => m.uid),
+    )
+    return this.companiesService.update(args)
+  }
+
+  @AllowAuthenticated()
+  @Mutation(() => Company)
+  async removeCompany(
+    @Args() args: FindUniqueCompanyArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const company = await this.prisma.company.findUnique({
+      ...args,
+      include: { managers: true },
+    })
+    checkRowLevelPermission(
+      user,
+      company.managers.map((m) => m.uid),
+    )
+    return this.companiesService.remove(args)
+  }
+
+  @ResolveField(() => [Garage])
+  garages(@Parent() company: Company) {
+    return this.prisma.garage.findMany({ where: { companyId: company.id } })
+  }
+
+  @ResolveField(() => [Manager])
+  managers(@Parent() company: Company) {
+    return this.prisma.manager.findMany({ where: { companyId: company.id } })
+  }
+}

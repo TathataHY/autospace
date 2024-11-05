@@ -2,25 +2,1607 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Garage {
+  id: Int!
+  description: String
+  displayName: String
+  images: [String!]!
+  companyId: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  slotCounts: [SlotTypeCount!]!
+  availableSlots(slotsFilter: SlotWhereInput, dateFilter: DateFilterInput!): [MinimalSlotGroupBy!]!
+  verification: Verification
+  company: Company!
+  address: Address
+  slots: [Slot!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input SlotWhereInput {
+  id: IntFilter
+  displayName: StringFilter
+  pricePerHour: FloatFilter
+  length: IntFilter
+  width: IntFilter
+  height: IntFilter
+  type: EnumSlotTypeFilter
+  garageId: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  garage: GarageRelationFilter
+  bookings: BookingListRelationFilter
+  AND: [SlotWhereInputStrict!]
+  OR: [SlotWhereInputStrict!]
+  NOT: [SlotWhereInputStrict!]
+}
+
+input IntFilter {
+  equals: Int
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: String
+  mode: QueryMode
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input FloatFilter {
+  equals: Float
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: Float
+}
+
+input EnumSlotTypeFilter {
+  equals: SlotType
+  in: [SlotType!]
+  notIn: [SlotType!]
+  not: SlotType
+}
+
+enum SlotType {
+  CAR
+  HEAVY
+  BIKE
+  BICYCLE
+}
+
+input DateTimeFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+}
+
+input GarageRelationFilter {
+  is: GarageWhereInput
+  isNot: GarageWhereInput
+}
+
+input GarageWhereInput {
+  id: IntFilter
+  displayName: StringFilter
+  description: StringFilter
+  images: StringListFilter
+  companyId: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  company: CompanyRelationFilter
+  address: AddressRelationFilter
+  verification: VerificationRelationFilter
+  reviews: ReviewListRelationFilter
+  slots: SlotListRelationFilter
+  AND: [GarageWhereInputStrict!]
+  OR: [GarageWhereInputStrict!]
+  NOT: [GarageWhereInputStrict!]
+}
+
+input StringListFilter {
+  equals: [String!]
+  has: String
+  hasEvery: [String!]
+  hasSome: [String!]
+  isEmpty: Boolean
+}
+
+input CompanyRelationFilter {
+  is: CompanyWhereInput
+  isNot: CompanyWhereInput
+}
+
+input CompanyWhereInput {
+  id: IntFilter
+  displayName: StringFilter
+  description: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  garages: GarageListRelationFilter
+  managers: ManagerListRelationFilter
+  valets: ValetListRelationFilter
+  AND: [CompanyWhereInputStrict!]
+  OR: [CompanyWhereInputStrict!]
+  NOT: [CompanyWhereInputStrict!]
+}
+
+input GarageListRelationFilter {
+  every: GarageWhereInput
+  some: GarageWhereInput
+  none: GarageWhereInput
+}
+
+input ManagerListRelationFilter {
+  every: ManagerWhereInput
+  some: ManagerWhereInput
+  none: ManagerWhereInput
+}
+
+input ManagerWhereInput {
+  uid: StringFilter
+  displayName: StringFilter
+  companyId: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  company: CompanyRelationFilter
+  bookingTimeline: BookingTimelineListRelationFilter
+  AND: [ManagerWhereInputStrict!]
+  OR: [ManagerWhereInputStrict!]
+  NOT: [ManagerWhereInputStrict!]
+}
+
+input UserRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
+input UserWhereInput {
+  manager: ManagerRelationFilter
+  valet: ValetRelationFilter
+  customer: CustomerRelationFilter
+  uid: StringFilter
+  name: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  AND: [UserWhereInputStrict!]
+  OR: [UserWhereInputStrict!]
+  NOT: [UserWhereInputStrict!]
+}
+
+input ManagerRelationFilter {
+  is: ManagerWhereInput
+  isNot: ManagerWhereInput
+}
+
+input ValetRelationFilter {
+  is: ValetWhereInput
+  isNot: ValetWhereInput
+}
+
+input ValetWhereInput {
+  bookingTimeline: BookingTimelineListRelationFilter
+  pickupAssignments: ValetAssignmentListRelationFilter
+  returnAssignments: ValetAssignmentListRelationFilter
+  uid: StringFilter
+  displayName: StringFilter
+  image: StringFilter
+  licenceID: StringFilter
+  companyId: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  company: CompanyRelationFilter
+  AND: [ValetWhereInputStrict!]
+  OR: [ValetWhereInputStrict!]
+  NOT: [ValetWhereInputStrict!]
+}
+
+input BookingTimelineListRelationFilter {
+  every: BookingTimelineWhereInput
+  some: BookingTimelineWhereInput
+  none: BookingTimelineWhereInput
+}
+
+input BookingTimelineWhereInput {
+  id: IntFilter
+  timestamp: DateTimeFilter
+  status: BookingStatus
+  bookingId: IntFilter
+  valetId: StringFilter
+  managerId: StringFilter
+  booking: BookingRelationFilter
+  valet: ValetRelationFilter
+  manager: ManagerRelationFilter
+  AND: [BookingTimelineWhereInputStrict!]
+  OR: [BookingTimelineWhereInputStrict!]
+  NOT: [BookingTimelineWhereInputStrict!]
+}
+
+enum BookingStatus {
+  BOOKED
+  VALET_ASSIGNED_FOR_CHECK_IN
+  VALET_PICKED_UP
+  CHECKED_IN
+  VALET_ASSIGNED_FOR_CHECK_OUT
+  CHECKED_OUT
+  VALET_RETURNED
+}
+
+input BookingRelationFilter {
+  is: BookingWhereInputStrict
+  isNot: BookingWhereInputStrict
+}
+
+input BookingWhereInputStrict {
+  id: IntFilter!
+  pricePerHour: FloatFilter!
+  totalPrice: FloatFilter!
+  startTime: DateTimeFilter!
+  endTime: DateTimeFilter!
+  vehicleNumber: StringFilter!
+  phoneNumber: StringFilter!
+  passcode: StringFilter!
+  status: EnumBookingStatusFilter!
+  slotId: IntFilter!
+  customerId: StringFilter!
+  createdAt: DateTimeFilter!
+  updatedAt: DateTimeFilter!
+  slot: SlotRelationFilter!
+  customer: CustomerRelationFilter!
+  valetAssignment: ValetAssignmentRelationFilter!
+  bookingTimeline: BookingTimelineListRelationFilter!
+  AND: [BookingWhereInputStrict!]!
+  OR: [BookingWhereInputStrict!]!
+  NOT: [BookingWhereInputStrict!]!
+}
+
+input EnumBookingStatusFilter {
+  equals: BookingStatus
+  in: [BookingStatus!]
+  notIn: [BookingStatus!]
+  not: BookingStatus
+}
+
+input SlotRelationFilter {
+  is: SlotWhereInput
+  isNot: SlotWhereInput
+}
+
+input CustomerRelationFilter {
+  is: CustomerWhereInput
+  isNot: CustomerWhereInput
+}
+
+input CustomerWhereInput {
+  uid: StringFilter
+  displayName: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  bookings: BookingListRelationFilter
+  reviews: ReviewListRelationFilter
+  AND: [CustomerWhereInputStrict!]
+  OR: [CustomerWhereInputStrict!]
+  NOT: [CustomerWhereInputStrict!]
+}
+
+input BookingListRelationFilter {
+  every: BookingWhereInputStrict
+  some: BookingWhereInputStrict
+  none: BookingWhereInputStrict
+}
+
+input ReviewListRelationFilter {
+  every: ReviewWhereInput
+  some: ReviewWhereInput
+  none: ReviewWhereInput
+}
+
+input ReviewWhereInput {
+  id: IntFilter
+  rating: IntFilter
+  comment: StringFilter
+  customerId: StringFilter
+  garageId: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  customer: CustomerRelationFilter
+  garage: GarageRelationFilter
+  AND: [ReviewWhereInputStrict!]
+  OR: [ReviewWhereInputStrict!]
+  NOT: [ReviewWhereInputStrict!]
+}
+
+input ReviewWhereInputStrict {
+  id: IntFilter!
+  rating: IntFilter!
+  comment: StringFilter!
+  customerId: StringFilter!
+  garageId: IntFilter!
+  createdAt: DateTimeFilter!
+  updatedAt: DateTimeFilter!
+  customer: CustomerRelationFilter!
+  garage: GarageRelationFilter!
+  AND: [ReviewWhereInputStrict!]!
+  OR: [ReviewWhereInputStrict!]!
+  NOT: [ReviewWhereInputStrict!]!
+}
+
+input CustomerWhereInputStrict {
+  uid: StringFilter!
+  displayName: StringFilter!
+  createdAt: DateTimeFilter!
+  updatedAt: DateTimeFilter!
+  user: UserRelationFilter!
+  bookings: BookingListRelationFilter!
+  reviews: ReviewListRelationFilter!
+  AND: [CustomerWhereInputStrict!]!
+  OR: [CustomerWhereInputStrict!]!
+  NOT: [CustomerWhereInputStrict!]!
+}
+
+input ValetAssignmentRelationFilter {
+  is: ValetAssignmentWhereInput
+  isNot: ValetAssignmentWhereInput
+}
+
+input ValetAssignmentWhereInput {
+  returnValetId: StringFilter
+  bookingId: IntFilter
+  pickupLat: FloatFilter
+  pickupLng: FloatFilter
+  returnLat: FloatFilter
+  returnLng: FloatFilter
+  pickupValetId: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  pickupValet: ValetRelationFilter
+  returnValet: ValetRelationFilter
+  booking: BookingRelationFilter
+  AND: [ValetAssignmentWhereInputStrict!]
+  OR: [ValetAssignmentWhereInputStrict!]
+  NOT: [ValetAssignmentWhereInputStrict!]
+}
+
+input ValetAssignmentWhereInputStrict {
+  returnValetId: StringFilter!
+  bookingId: IntFilter!
+  pickupLat: FloatFilter!
+  pickupLng: FloatFilter!
+  returnLat: FloatFilter!
+  returnLng: FloatFilter!
+  pickupValetId: StringFilter!
+  createdAt: DateTimeFilter!
+  updatedAt: DateTimeFilter!
+  pickupValet: ValetRelationFilter!
+  returnValet: ValetRelationFilter!
+  booking: BookingRelationFilter!
+  AND: [ValetAssignmentWhereInputStrict!]!
+  OR: [ValetAssignmentWhereInputStrict!]!
+  NOT: [ValetAssignmentWhereInputStrict!]!
+}
+
+input BookingTimelineWhereInputStrict {
+  id: IntFilter!
+  timestamp: DateTimeFilter!
+  status: BookingStatus!
+  bookingId: IntFilter!
+  valetId: StringFilter!
+  managerId: StringFilter!
+  booking: BookingRelationFilter!
+  valet: ValetRelationFilter!
+  manager: ManagerRelationFilter!
+  AND: [BookingTimelineWhereInputStrict!]!
+  OR: [BookingTimelineWhereInputStrict!]!
+  NOT: [BookingTimelineWhereInputStrict!]!
+}
+
+input ValetAssignmentListRelationFilter {
+  every: ValetAssignmentWhereInput
+  some: ValetAssignmentWhereInput
+  none: ValetAssignmentWhereInput
+}
+
+input ValetWhereInputStrict {
+  bookingTimeline: BookingTimelineListRelationFilter!
+  pickupAssignments: ValetAssignmentListRelationFilter!
+  returnAssignments: ValetAssignmentListRelationFilter!
+  uid: StringFilter!
+  displayName: StringFilter!
+  image: StringFilter!
+  licenceID: StringFilter!
+  companyId: IntFilter!
+  createdAt: DateTimeFilter!
+  updatedAt: DateTimeFilter!
+  user: UserRelationFilter!
+  company: CompanyRelationFilter!
+  AND: [ValetWhereInputStrict!]!
+  OR: [ValetWhereInputStrict!]!
+  NOT: [ValetWhereInputStrict!]!
+}
+
+input UserWhereInputStrict {
+  manager: ManagerRelationFilter!
+  valet: ValetRelationFilter!
+  customer: CustomerRelationFilter!
+  uid: StringFilter!
+  name: StringFilter!
+  createdAt: DateTimeFilter!
+  updatedAt: DateTimeFilter!
+  AND: [UserWhereInputStrict!]!
+  OR: [UserWhereInputStrict!]!
+  NOT: [UserWhereInputStrict!]!
+}
+
+input ManagerWhereInputStrict {
+  uid: StringFilter!
+  displayName: StringFilter!
+  companyId: IntFilter!
+  createdAt: DateTimeFilter!
+  updatedAt: DateTimeFilter!
+  user: UserRelationFilter!
+  company: CompanyRelationFilter!
+  bookingTimeline: BookingTimelineListRelationFilter!
+  AND: [ManagerWhereInputStrict!]!
+  OR: [ManagerWhereInputStrict!]!
+  NOT: [ManagerWhereInputStrict!]!
+}
+
+input ValetListRelationFilter {
+  every: ValetWhereInput
+  some: ValetWhereInput
+  none: ValetWhereInput
+}
+
+input CompanyWhereInputStrict {
+  id: IntFilter!
+  displayName: StringFilter!
+  description: StringFilter!
+  createdAt: DateTimeFilter!
+  updatedAt: DateTimeFilter!
+  garages: GarageListRelationFilter!
+  managers: ManagerListRelationFilter!
+  valets: ValetListRelationFilter!
+  AND: [CompanyWhereInputStrict!]!
+  OR: [CompanyWhereInputStrict!]!
+  NOT: [CompanyWhereInputStrict!]!
+}
+
+input AddressRelationFilter {
+  is: AddressWhereInput
+  isNot: AddressWhereInput
+}
+
+input AddressWhereInput {
+  id: IntFilter
+  address: StringFilter
+  latitude: FloatFilter
+  longitude: FloatFilter
+  garageId: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  garage: GarageRelationFilter
+  AND: [AddressWhereInputStrict!]
+  OR: [AddressWhereInputStrict!]
+  NOT: [AddressWhereInputStrict!]
+}
+
+input AddressWhereInputStrict {
+  id: IntFilter!
+  address: StringFilter!
+  latitude: FloatFilter!
+  longitude: FloatFilter!
+  garageId: IntFilter!
+  createdAt: DateTimeFilter!
+  updatedAt: DateTimeFilter!
+  garage: GarageRelationFilter!
+  AND: [AddressWhereInputStrict!]!
+  OR: [AddressWhereInputStrict!]!
+  NOT: [AddressWhereInputStrict!]!
+}
+
+input VerificationRelationFilter {
+  is: VerificationWhereInput
+  isNot: VerificationWhereInput
+}
+
+input VerificationWhereInput {
+  verified: BoolFilter
+  adminId: StringFilter
+  garageId: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  admin: AdminRelationFilter
+  garage: GarageRelationFilter
+  AND: [VerificationWhereInputStrict!]
+  OR: [VerificationWhereInputStrict!]
+  NOT: [VerificationWhereInputStrict!]
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: Boolean
+}
+
+input AdminRelationFilter {
+  is: AdminWhereInput
+  isNot: AdminWhereInput
+}
+
+input AdminWhereInput {
+  uid: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  verifications: VerificationListRelationFilter
+  AND: [AdminWhereInputStrict!]
+  OR: [AdminWhereInputStrict!]
+  NOT: [AdminWhereInputStrict!]
+}
+
+input VerificationListRelationFilter {
+  every: VerificationWhereInput
+  some: VerificationWhereInput
+  none: VerificationWhereInput
+}
+
+input AdminWhereInputStrict {
+  uid: StringFilter!
+  createdAt: DateTimeFilter!
+  updatedAt: DateTimeFilter!
+  user: UserRelationFilter!
+  verifications: VerificationListRelationFilter!
+  AND: [AdminWhereInputStrict!]!
+  OR: [AdminWhereInputStrict!]!
+  NOT: [AdminWhereInputStrict!]!
+}
+
+input VerificationWhereInputStrict {
+  verified: BoolFilter!
+  adminId: StringFilter!
+  garageId: IntFilter!
+  createdAt: DateTimeFilter!
+  updatedAt: DateTimeFilter!
+  admin: AdminRelationFilter!
+  garage: GarageRelationFilter!
+  AND: [VerificationWhereInputStrict!]!
+  OR: [VerificationWhereInputStrict!]!
+  NOT: [VerificationWhereInputStrict!]!
+}
+
+input SlotListRelationFilter {
+  every: SlotWhereInput
+  some: SlotWhereInput
+  none: SlotWhereInput
+}
+
+input GarageWhereInputStrict {
+  id: IntFilter!
+  displayName: StringFilter!
+  description: StringFilter!
+  images: StringListFilter!
+  companyId: IntFilter!
+  createdAt: DateTimeFilter!
+  updatedAt: DateTimeFilter!
+  company: CompanyRelationFilter!
+  address: AddressRelationFilter!
+  verification: VerificationRelationFilter!
+  reviews: ReviewListRelationFilter!
+  slots: SlotListRelationFilter!
+  AND: [GarageWhereInputStrict!]!
+  OR: [GarageWhereInputStrict!]!
+  NOT: [GarageWhereInputStrict!]!
+}
+
+input SlotWhereInputStrict {
+  id: IntFilter!
+  displayName: StringFilter!
+  pricePerHour: FloatFilter!
+  length: IntFilter!
+  width: IntFilter!
+  height: IntFilter!
+  type: EnumSlotTypeFilter!
+  garageId: IntFilter!
+  createdAt: DateTimeFilter!
+  updatedAt: DateTimeFilter!
+  garage: GarageRelationFilter!
+  bookings: BookingListRelationFilter!
+  AND: [SlotWhereInputStrict!]!
+  OR: [SlotWhereInputStrict!]!
+  NOT: [SlotWhereInputStrict!]!
+}
+
+input DateFilterInput {
+  start: String!
+  end: String!
+}
+
+type SlotTypeCount {
+  type: SlotType!
+  count: Int
+}
+
+type Address {
+  id: Int!
+  address: String!
+  latitude: Float!
+  longitude: Float!
+  garageId: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  garage: Garage
+}
+
+type AggregateCountOutput {
+  count: Int!
+}
+
 type User {
   uid: String!
+  name: String
+  image: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  admin: Admin
+  manager: Manager
+  valet: Valet
+  customer: Customer
+}
+
+type AuthProvider {
+  uid: String!
+  type: AuthProviderType!
+}
+
+enum AuthProviderType {
+  CREDENTIALS
+  GOOGLE
+}
+
+type Verification {
+  garageId: Int!
+  verified: Boolean!
+  adminId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Admin {
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User
+  verifications: [Verification!]!
+  verificationsCount: Float!
+}
+
+type BookingTimeline {
+  id: Int!
+  timestamp: DateTime!
+  status: BookingStatus!
+  bookingId: Int!
+  valetId: String
+  managerId: String
+}
+
+type Customer {
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  displayName: String
+  user: User
+}
+
+type Slot {
+  id: Int!
+  displayName: String
+  pricePerHour: Float!
+  length: Int
+  width: Int
+  height: Int
+  type: SlotType!
+  garageId: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  garage: Garage!
+  bookings: [Booking!]!
+}
+
+type ReturnCount {
+  count: Int!
+}
+
+type ValetAssignment {
+  bookingId: Int!
+  pickupValetId: String
+  pickupLat: Float
+  pickupLng: Float
+  returnLat: Float
+  returnLng: Float
+  returnValetId: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  pickupValet: Valet
+  returnValet: Valet
+}
+
+type Booking {
+  id: Int!
+  phoneNumber: String
+  pricePerHour: Float
+  totalPrice: Float
+  startTime: DateTime!
+  endTime: DateTime!
+  vehicleNumber: String!
+  passcode: String
+  status: BookingStatus!
+  slotId: Int!
+  customerId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  slot: Slot!
+  customer: Customer!
+  bookingTimeline: [BookingTimeline!]!
+  valetAssignment: ValetAssignment
+}
+
+type Manager {
+  uid: String!
+  displayName: String
+  companyId: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  company: Company
+}
+
+type Valet {
+  uid: String!
+  displayName: String!
+  image: String
+  licenceID: String!
+  companyId: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Company {
+  id: Int!
+  description: String
+  displayName: String
+  garages: [Garage!]!
+  managers: [Manager!]!
+  valets: [Valet!]!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+type MinimalSlotGroupBy {
+  pricePerHour: Float!
+  type: SlotType!
+  count: Int!
+}
+
+type Review {
+  id: Int!
+  garageId: Int!
+  customerId: String!
+  rating: Int!
+  comment: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type LoginResponse {
+  accessToken: String!
+  user: User!
 }
 
 type Query {
-  users: [User!]!
-  user(id: Int!): User!
+  whoAmI: User!
+  users(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
+  user(where: UserWhereUniqueInput!): User!
+  getAuthProvider(uid: String!): AuthProvider
+  admins(where: AdminWhereInput, orderBy: [AdminOrderByWithRelationInput!], cursor: AdminWhereUniqueInput, take: Int, skip: Int, distinct: [AdminScalarFieldEnum!]): [Admin!]!
+  admin(where: AdminWhereUniqueInput!): Admin!
+  adminMe: Admin!
+  adminsCount(where: AdminWhereInput): Float!
+  customers(where: CustomerWhereInput, orderBy: [CustomerOrderByWithRelationInput!], cursor: CustomerWhereUniqueInput, take: Int, skip: Int, distinct: [CustomerScalarFieldEnum!]): [Customer!]!
+  customer(where: CustomerWhereUniqueInput!): Customer!
+  managers(where: ManagerWhereInput, orderBy: [ManagerOrderByWithRelationInput!], cursor: ManagerWhereUniqueInput, take: Int, skip: Int, distinct: [ManagerScalarFieldEnum!]): [Manager!]!
+  manager(where: ManagerWhereUniqueInput!): Manager!
+  valets(where: ValetWhereInput, orderBy: [ValetOrderByWithRelationInput!], cursor: ValetWhereUniqueInput, take: Int, skip: Int, distinct: [ValetScalarFieldEnum!]): [Valet!]!
+  valet(where: ValetWhereUniqueInput!): Valet!
+  companyValets(where: ValetWhereInput, orderBy: [ValetOrderByWithRelationInput!], cursor: ValetWhereUniqueInput, take: Int, skip: Int, distinct: [ValetScalarFieldEnum!]): [Valet!]!
+  companyValetsTotal(where: ValetWhereInput): Float!
+  valetMe: Valet
+  valetPickups(take: Int, skip: Int): [Booking!]!
+  valetPickupsTotal: Float!
+  valetDrops(take: Int, skip: Int): [Booking!]!
+  valetDropsTotal: Float!
+  companies(where: CompanyWhereInput, orderBy: [CompanyOrderByWithRelationInput!], cursor: CompanyWhereUniqueInput, take: Int, skip: Int, distinct: [CompanyScalarFieldEnum!]): [Company!]!
+  company(where: CompanyWhereUniqueInput!): Company!
+  myCompany: Company!
+  garages(where: GarageWhereInput, orderBy: [GarageOrderByWithRelationInput!], cursor: GarageWhereUniqueInput, take: Int, skip: Int, distinct: [GarageScalarFieldEnum!]): [Garage!]!
+  garage(where: GarageWhereUniqueInput!): Garage!
+  searchGarages(dateFilter: DateFilterInput!, locationFilter: LocationFilterInput!, slotsFilter: SlotWhereInput, garageFilter: GarageFilter): [Garage!]!
+  garagesCount(where: GarageWhereInput): AggregateCountOutput!
+  addresses(where: AddressWhereInput, orderBy: [AddressOrderByWithRelationInput!], cursor: AddressWhereUniqueInput, take: Int, skip: Int, distinct: [AddressScalarFieldEnum!]): [Address!]!
+  address(where: AddressWhereUniqueInput!): Address!
+  slots(where: SlotWhereInput, orderBy: [SlotOrderByWithRelationInput!], cursor: SlotWhereUniqueInput, take: Int, skip: Int, distinct: [SlotScalarFieldEnum!]): [Slot!]!
+  slot(where: SlotWhereUniqueInput!): Slot!
+  bookings(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
+  bookingsForValet(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
+  bookingsForCustomer(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
+  bookingsForGarage(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
+  bookingsCount(where: BookingWhereInput): AggregateCountOutput!
+  booking(where: BookingWhereUniqueInput!): Booking!
+  valetAssignments(where: ValetAssignmentWhereInput, orderBy: [ValetAssignmentOrderByWithRelationInput!], cursor: ValetAssignmentWhereUniqueInput, take: Int, skip: Int, distinct: [ValetAssignmentScalarFieldEnum!]): [ValetAssignment!]!
+  valetAssignment(where: ValetAssignmentWhereUniqueInput!): ValetAssignment!
+  bookingTimelines(where: BookingTimelineWhereInput, orderBy: [BookingTimelineOrderByWithRelationInput!], cursor: BookingTimelineWhereUniqueInput, take: Int, skip: Int, distinct: [BookingTimelineScalarFieldEnum!]): [BookingTimeline!]!
+  bookingTimeline(where: BookingTimelineWhereUniqueInput!): BookingTimeline!
+  reviews(where: ReviewWhereInput, orderBy: [ReviewOrderByWithRelationInput!], cursor: ReviewWhereUniqueInput, take: Int, skip: Int, distinct: [ReviewScalarFieldEnum!]): [Review!]!
+  review(where: ReviewWhereUniqueInput!): Review!
+  verifications(where: VerificationWhereInput, orderBy: [VerificationOrderByWithRelationInput!], cursor: VerificationWhereUniqueInput, take: Int, skip: Int, distinct: [VerificationScalarFieldEnum!]): [Verification!]!
+  verification(where: VerificationWhereUniqueInput!): Verification!
 }
 
-type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
+input UserOrderByWithRelationInput {
+  manager: ManagerOrderByWithRelationInput
+  valet: ValetOrderByWithRelationInput
+  customer: CustomerOrderByWithRelationInput
+  uid: SortOrder
+  name: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
 }
 
-input CreateUserInput {
+input ManagerOrderByWithRelationInput {
+  uid: SortOrder
+  displayName: SortOrder
+  companyId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  company: CompanyOrderByWithRelationInput
+  bookingTimeline: BookingTimelineOrderByRelationAggregateInput
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input CompanyOrderByWithRelationInput {
+  id: SortOrder
+  displayName: SortOrder
+  description: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  garages: GarageOrderByRelationAggregateInput
+  managers: ManagerOrderByRelationAggregateInput
+  valets: ValetOrderByRelationAggregateInput
+}
+
+input GarageOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input ManagerOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input ValetOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input BookingTimelineOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input ValetOrderByWithRelationInput {
+  uid: SortOrder
+  displayName: SortOrder
+  image: SortOrder
+  licenceID: SortOrder
+  companyId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  company: CompanyOrderByWithRelationInput
+  bookingTimeline: BookingTimelineOrderByRelationAggregateInput
+  pickupAssignments: ValetAssignmentOrderByRelationAggregateInput
+  returnAssignments: ValetAssignmentOrderByRelationAggregateInput
+}
+
+input ValetAssignmentOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input CustomerOrderByWithRelationInput {
+  uid: SortOrder
+  displayName: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  bookings: BookingOrderByRelationAggregateInput
+  reviews: ReviewOrderByRelationAggregateInput
+}
+
+input BookingOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input ReviewOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input UserWhereUniqueInput {
   uid: String!
 }
 
+enum UserScalarFieldEnum {
+  uid
+  name
+  image
+  createdAt
+  updatedAt
+}
+
+input AdminOrderByWithRelationInput {
+  uid: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  verifications: VerificationOrderByRelationAggregateInput
+}
+
+input VerificationOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input AdminWhereUniqueInput {
+  uid: String!
+}
+
+enum AdminScalarFieldEnum {
+  uid
+  createdAt
+  updatedAt
+}
+
+input CustomerWhereUniqueInput {
+  uid: String!
+}
+
+enum CustomerScalarFieldEnum {
+  uid
+  displayName
+  createdAt
+  updatedAt
+}
+
+input ManagerWhereUniqueInput {
+  uid: String!
+}
+
+enum ManagerScalarFieldEnum {
+  uid
+  displayName
+  companyId
+  createdAt
+  updatedAt
+}
+
+input ValetWhereUniqueInput {
+  uid: String!
+}
+
+enum ValetScalarFieldEnum {
+  uid
+  displayName
+  image
+  licenceID
+  companyId
+  createdAt
+  updatedAt
+}
+
+input CompanyWhereUniqueInput {
+  id: Int!
+}
+
+enum CompanyScalarFieldEnum {
+  id
+  displayName
+  description
+  createdAt
+  updatedAt
+}
+
+input GarageOrderByWithRelationInput {
+  id: SortOrder
+  displayName: SortOrder
+  description: SortOrder
+  images: SortOrder
+  companyId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  company: CompanyOrderByWithRelationInput
+  address: AddressOrderByWithRelationInput
+  verification: VerificationOrderByWithRelationInput
+  reviews: ReviewOrderByRelationAggregateInput
+  slots: SlotOrderByRelationAggregateInput
+}
+
+input AddressOrderByWithRelationInput {
+  id: SortOrder
+  address: SortOrder
+  latitude: SortOrder
+  longitude: SortOrder
+  garageId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  garage: GarageOrderByWithRelationInput
+}
+
+input VerificationOrderByWithRelationInput {
+  admin: AdminOrderByWithRelationInput
+  verified: SortOrder
+  adminId: SortOrder
+  garageId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  garage: GarageOrderByWithRelationInput
+}
+
+input SlotOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input GarageWhereUniqueInput {
+  id: Int!
+}
+
+enum GarageScalarFieldEnum {
+  id
+  displayName
+  description
+  images
+  companyId
+  createdAt
+  updatedAt
+}
+
+input LocationFilterInput {
+  ne_lat: Float!
+  ne_lng: Float!
+  sw_lat: Float!
+  sw_lng: Float!
+}
+
+input GarageFilter {
+  where: GarageWhereInput
+  orderBy: [GarageOrderByWithRelationInput!]
+  take: Int
+  skip: Int
+}
+
+input AddressWhereUniqueInput {
+  id: Int!
+}
+
+enum AddressScalarFieldEnum {
+  id
+  address
+  latitude
+  longitude
+  garageId
+  createdAt
+  updatedAt
+}
+
+input SlotOrderByWithRelationInput {
+  garage: GarageOrderByWithRelationInput
+  bookings: BookingOrderByRelationAggregateInput
+  id: SortOrder
+  displayName: SortOrder
+  pricePerHour: SortOrder
+  length: SortOrder
+  width: SortOrder
+  height: SortOrder
+  type: SortOrder
+  garageId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input SlotWhereUniqueInput {
+  id: Int!
+}
+
+enum SlotScalarFieldEnum {
+  id
+  displayName
+  pricePerHour
+  length
+  width
+  height
+  type
+  garageId
+  createdAt
+  updatedAt
+}
+
+input BookingWhereInput {
+  id: IntFilter
+  pricePerHour: FloatFilter
+  totalPrice: FloatFilter
+  startTime: DateTimeFilter
+  endTime: DateTimeFilter
+  vehicleNumber: StringFilter
+  phoneNumber: StringFilter
+  passcode: StringFilter
+  status: EnumBookingStatusFilter
+  slotId: IntFilter
+  customerId: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  slot: SlotRelationFilter
+  customer: CustomerRelationFilter
+  valetAssignment: ValetAssignmentRelationFilter
+  bookingTimeline: BookingTimelineListRelationFilter
+  AND: [BookingWhereInputStrict!]
+  OR: [BookingWhereInputStrict!]
+  NOT: [BookingWhereInputStrict!]
+}
+
+input BookingOrderByWithRelationInput {
+  id: SortOrder
+  pricePerHour: SortOrder
+  totalPrice: SortOrder
+  startTime: SortOrder
+  endTime: SortOrder
+  vehicleNumber: SortOrder
+  phoneNumber: SortOrder
+  passcode: SortOrder
+  status: SortOrder
+  slotId: SortOrder
+  customerId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  slot: SlotOrderByWithRelationInput
+  customer: CustomerOrderByWithRelationInput
+  valetAssignment: ValetAssignmentOrderByWithRelationInput
+  bookingTimeline: BookingTimelineOrderByRelationAggregateInput
+}
+
+input ValetAssignmentOrderByWithRelationInput {
+  bookingId: SortOrder
+  pickupLat: SortOrder
+  pickupLng: SortOrder
+  returnLat: SortOrder
+  returnLng: SortOrder
+  pickupValetId: SortOrder
+  returnValetId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  pickupValet: ValetOrderByWithRelationInput
+  returnValet: ValetOrderByWithRelationInput
+  booking: BookingOrderByWithRelationInput
+}
+
+input BookingWhereUniqueInput {
+  id: Int!
+}
+
+enum BookingScalarFieldEnum {
+  id
+  pricePerHour
+  totalPrice
+  startTime
+  endTime
+  vehicleNumber
+  phoneNumber
+  passcode
+  status
+  slotId
+  customerId
+  createdAt
+  updatedAt
+}
+
+input ValetAssignmentWhereUniqueInput {
+  bookingId: Int!
+}
+
+enum ValetAssignmentScalarFieldEnum {
+  bookingId
+  pickupLat
+  pickupLng
+  returnLat
+  returnLng
+  pickupValetId
+  returnValetId
+  createdAt
+  updatedAt
+}
+
+input BookingTimelineOrderByWithRelationInput {
+  id: SortOrder
+  timestamp: SortOrder
+  status: SortOrder
+  bookingId: SortOrder
+  valetId: SortOrder
+  managerId: SortOrder
+  booking: BookingOrderByWithRelationInput
+  valet: ValetOrderByWithRelationInput
+  manager: ManagerOrderByWithRelationInput
+}
+
+input BookingTimelineWhereUniqueInput {
+  id: Int!
+}
+
+enum BookingTimelineScalarFieldEnum {
+  id
+  timestamp
+  status
+  bookingId
+  valetId
+  managerId
+}
+
+input ReviewOrderByWithRelationInput {
+  id: SortOrder
+  rating: SortOrder
+  comment: SortOrder
+  customerId: SortOrder
+  garageId: SortOrder
+  updatedAt: SortOrder
+  createdAt: SortOrder
+  customer: CustomerOrderByWithRelationInput
+  garage: GarageOrderByWithRelationInput
+}
+
+input ReviewWhereUniqueInput {
+  id: Int!
+}
+
+enum ReviewScalarFieldEnum {
+  id
+  rating
+  comment
+  customerId
+  garageId
+  createdAt
+  updatedAt
+}
+
+input VerificationWhereUniqueInput {
+  garageId: Int!
+}
+
+enum VerificationScalarFieldEnum {
+  verified
+  adminId
+  garageId
+  createdAt
+  updatedAt
+}
+
+type Mutation {
+  registerWithCredentials(registerWithCredentialsInput: RegisterWithCredentialsInput!): User!
+  registerWithProvider(registerWithProviderInput: RegisterWithProviderInput!): User!
+  login(loginInput: LoginInput!): LoginResponse!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(where: UserWhereUniqueInput!): User!
+  createAdmin(createAdminInput: CreateAdminInput!): Admin!
+  updateAdmin(updateAdminInput: UpdateAdminInput!): Admin!
+  removeAdmin(where: AdminWhereUniqueInput!): Admin!
+  createCustomer(createCustomerInput: CreateCustomerInput!): Customer!
+  updateCustomer(updateCustomerInput: UpdateCustomerInput!): Customer!
+  removeCustomer(where: CustomerWhereUniqueInput!): Customer!
+  createManager(createManagerInput: CreateManagerInput!): Manager!
+  updateManager(updateManagerInput: UpdateManagerInput!): Manager!
+  removeManager(where: ManagerWhereUniqueInput!): Manager!
+  createValet(createValetInput: CreateValetInput!): Valet!
+  assignValet(bookingId: Float!, status: String!): Booking!
+  updateValet(updateValetInput: UpdateValetInput!): Valet!
+  removeValet(where: ValetWhereUniqueInput!): Valet!
+  createCompany(createCompanyInput: CreateCompanyInput!): Company!
+  updateCompany(updateCompanyInput: UpdateCompanyInput!): Company!
+  removeCompany(where: CompanyWhereUniqueInput!): Company!
+  createGarage(createGarageInput: CreateGarageInput!): Garage!
+  updateGarage(updateGarageInput: UpdateGarageInput!): Garage!
+  removeGarage(where: GarageWhereUniqueInput!): Garage!
+  createAddress(createAddressInput: CreateAddressInput!): Address!
+  updateAddress(updateAddressInput: UpdateAddressInput!): Address!
+  removeAddress(where: AddressWhereUniqueInput!): Address!
+  createSlot(createSlotInput: CreateSlotInput!): Slot!
+  createManySlots(createSlotInput: CreateSlotInput!, count: Float!): ReturnCount!
+  updateSlot(updateSlotInput: UpdateSlotInput!): Slot!
+  removeSlot(where: SlotWhereUniqueInput!): Slot!
+  createBooking(createBookingInput: CreateBookingInput!): Booking!
+  updateBooking(updateBookingInput: UpdateBookingInput!): Booking!
+  removeBooking(where: BookingWhereUniqueInput!): Booking!
+  createValetAssignment(createValetAssignmentInput: CreateValetAssignmentInput!): ValetAssignment!
+  updateValetAssignment(updateValetAssignmentInput: UpdateValetAssignmentInput!): ValetAssignment!
+  removeValetAssignment(where: ValetAssignmentWhereUniqueInput!): ValetAssignment!
+  createBookingTimeline(createBookingTimelineInput: CreateBookingTimelineInput!): BookingTimeline!
+  updateBookingTimeline(updateBookingTimelineInput: UpdateBookingTimelineInput!): BookingTimeline!
+  removeBookingTimeline(where: BookingTimelineWhereUniqueInput!): BookingTimeline!
+  createReview(createReviewInput: CreateReviewInput!): Review!
+  updateReview(updateReviewInput: UpdateReviewInput!): Review!
+  removeReview(where: ReviewWhereUniqueInput!): Review!
+  createVerification(createVerificationInput: CreateVerificationInput!): Verification!
+  updateVerification(updateVerificationInput: UpdateVerificationInput!): Verification!
+  removeVerification(where: VerificationWhereUniqueInput!): Verification!
+}
+
+input RegisterWithCredentialsInput {
+  name: String
+  image: String
+  email: String!
+  password: String!
+}
+
+input RegisterWithProviderInput {
+  uid: String!
+  name: String
+  image: String
+  type: AuthProviderType!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
 input UpdateUserInput {
-  uid: String
+  uid: String!
+}
+
+input CreateAdminInput {
+  uid: String!
+}
+
+input UpdateAdminInput {
+  uid: String!
+}
+
+input CreateCustomerInput {
+  uid: String!
+  displayName: String
+}
+
+input UpdateCustomerInput {
+  uid: String!
+  displayName: String
+}
+
+input CreateManagerInput {
+  uid: String!
+  displayName: String
+}
+
+input UpdateManagerInput {
+  uid: String!
+  displayName: String
+}
+
+input CreateValetInput {
+  uid: String!
+  displayName: String!
+  image: String
+  licenceID: String!
+  companyId: Int
+}
+
+input UpdateValetInput {
+  uid: String!
+  displayName: String
+  image: String
+  licenceID: String
+  companyId: Int
+}
+
+input CreateCompanyInput {
+  description: String
+  displayName: String
+  managerId: String!
+  managerName: String
+}
+
+input UpdateCompanyInput {
+  description: String
+  displayName: String
+  managerId: String
+  managerName: String
+  id: Int!
+}
+
+input CreateGarageInput {
+  description: String
+  displayName: String
+  images: [String!]!
+  address: CreateAddressInputWithoutGarageId!
+  slots: [CreateSlotInputWithoutGarageId!]!
+}
+
+input CreateAddressInputWithoutGarageId {
+  address: String!
+  latitude: Float!
+  longitude: Float!
+}
+
+input CreateSlotInputWithoutGarageId {
+  displayName: String
+  pricePerHour: Float!
+  length: Int
+  width: Int
+  height: Int
+  type: SlotType!
+  count: Int!
+}
+
+input UpdateGarageInput {
+  description: String
+  displayName: String
+  images: [String!]
+  address: CreateAddressInputWithoutGarageId
+  slots: [CreateSlotInputWithoutGarageId!]
+  id: Int!
+}
+
+input CreateAddressInput {
+  address: String!
+  latitude: Float!
+  longitude: Float!
+  garageId: Int!
+}
+
+input UpdateAddressInput {
+  address: String
+  latitude: Float
+  longitude: Float
+  garageId: Int
+  id: Int!
+}
+
+input CreateSlotInput {
+  displayName: String
+  pricePerHour: Float!
+  length: Int
+  width: Int
+  height: Int
+  type: SlotType!
+  garageId: Int!
+}
+
+input UpdateSlotInput {
+  displayName: String
+  pricePerHour: Float
+  length: Int
+  width: Int
+  height: Int
+  type: SlotType
+  garageId: Int
+  id: Int!
+}
+
+input CreateBookingInput {
+  phoneNumber: String
+  startTime: DateTime!
+  endTime: DateTime!
+  vehicleNumber: String!
+  customerId: String!
+  garageId: Int!
+  type: SlotType!
+  pricePerHour: Float
+  totalPrice: Float
+  valetAssignment: CreateValetAssignmentInputWithoutBookingId
+}
+
+input CreateValetAssignmentInputWithoutBookingId {
+  pickupLat: Float!
+  pickupLng: Float!
+  returnLat: Float
+  returnLng: Float
+}
+
+input UpdateBookingInput {
+  phoneNumber: String
+  startTime: DateTime
+  endTime: DateTime
+  vehicleNumber: String
+  customerId: String
+  garageId: Int
+  type: SlotType
+  pricePerHour: Float
+  totalPrice: Float
+  valetAssignment: CreateValetAssignmentInputWithoutBookingId
+  id: Int!
+}
+
+input CreateValetAssignmentInput {
+  bookingId: Int!
+  pickupValetId: String
+  pickupLat: Float
+  pickupLng: Float
+  returnLat: Float
+  returnLng: Float
+  returnValetId: String
+}
+
+input UpdateValetAssignmentInput {
+  bookingId: Int!
+  pickupValetId: String
+  pickupLat: Float
+  pickupLng: Float
+  returnLat: Float
+  returnLng: Float
+  returnValetId: String
+}
+
+input CreateBookingTimelineInput {
+  status: BookingStatus!
+  bookingId: Int!
+}
+
+input UpdateBookingTimelineInput {
+  status: BookingStatus
+  bookingId: Int
+  id: Int!
+}
+
+input CreateReviewInput {
+  garageId: Int!
+  customerId: String!
+  rating: Int!
+  comment: String
+}
+
+input UpdateReviewInput {
+  garageId: Int
+  customerId: String
+  rating: Int
+  comment: String
+  id: Int!
+}
+
+input CreateVerificationInput {
+  garageId: Int!
+  verified: Boolean!
+}
+
+input UpdateVerificationInput {
+  garageId: Int!
+  verified: Boolean
 }
