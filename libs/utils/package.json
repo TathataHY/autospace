@@ -1,0 +1,16 @@
+{
+  "name": "@autospace/utils",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Utils module for Autospace that manages utility functions",
+  "scripts": {},
+  "author": "Tathata <andre.yovera1@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "pluralize": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/pluralize": "^0.0.33"
+  }
+}
