@@ -1,0 +1,119 @@
+mutation RegisterWithCredentials(
+  $registerWithCredentialsInput: RegisterWithCredentialsInput!
+) {
+  registerWithCredentials(
+    registerWithCredentialsInput: $registerWithCredentialsInput
+  ) {
+    updatedAt
+    uid
+    name
+    image
+    createdAt
+  }
+}
+
+mutation Login($loginInput: LoginInput!) {
+  login(loginInput: $loginInput) {
+    accessToken
+    user {
+      uid
+      name
+      image
+    }
+  }
+}
+
+mutation RegisterWithProvider(
+  $registerWithProviderInput: RegisterWithProviderInput!
+) {
+  registerWithProvider(registerWithProviderInput: $registerWithProviderInput) {
+    uid
+  }
+}
+
+mutation CreateCompany($createCompanyInput: CreateCompanyInput!) {
+  createCompany(createCompanyInput: $createCompanyInput) {
+    id
+  }
+}
+
+mutation CreateGarage($createGarageInput: CreateGarageInput!) {
+  createGarage(createGarageInput: $createGarageInput) {
+    id
+  }
+}
+
+mutation CreateManySlots($createSlotInput: CreateSlotInput!, $count: Float!) {
+  createManySlots(createSlotInput: $createSlotInput, count: $count) {
+    count
+  }
+}
+mutation createBookingTimeline(
+  $createBookingTimelineInput: CreateBookingTimelineInput!
+) {
+  createBookingTimeline(
+    createBookingTimelineInput: $createBookingTimelineInput
+  ) {
+    bookingId
+    id
+    managerId
+    status
+    timestamp
+  }
+}
+
+mutation CreateValet($createValetInput: CreateValetInput!) {
+  createValet(createValetInput: $createValetInput) {
+    uid
+  }
+}
+
+mutation AssignValet($bookingId: Float!, $status: String!) {
+  assignValet(bookingId: $bookingId, status: $status) {
+    id
+  }
+}
+
+mutation CreateVerification(
+  $createVerificationInput: CreateVerificationInput!
+) {
+  createVerification(createVerificationInput: $createVerificationInput) {
+    adminId
+    createdAt
+    garageId
+    updatedAt
+    verified
+  }
+}
+
+mutation RemoveVerification($where: VerificationWhereUniqueInput!) {
+  removeVerification(where: $where) {
+    adminId
+    createdAt
+    garageId
+    updatedAt
+    verified
+  }
+}
+
+mutation RemoveAdmin($where: AdminWhereUniqueInput!) {
+  removeAdmin(where: $where) {
+    createdAt
+    user {
+      name
+    }
+    updatedAt
+    uid
+  }
+}
+
+mutation CreateAdmin($createAdminInput: CreateAdminInput!) {
+  createAdmin(createAdminInput: $createAdminInput) {
+    createdAt
+    user {
+      name
+    }
+    uid
+    updatedAt
+  }
+}
